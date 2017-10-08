@@ -5,39 +5,61 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    Button startScan;
-    TextView scanedType,scanedContent;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    Button startScan, generateCode;
+    TextView scanedType, scanedContent;
+    EditText messageToEncrypt;
+    ImageView QRCodeImage;
     scanner _Scanner;
+    generator _generator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             startScan = (Button) findViewById(R.id.button);
+            generateCode = (Button) findViewById(R.id.button2);
             scanedContent = (TextView) findViewById(R.id.scanContent);
             scanedType = (TextView) findViewById(R.id.scanFormat);
+            messageToEncrypt = (EditText) findViewById(R.id.editText);
+            QRCodeImage = (ImageView) findViewById(R.id.imageView);
             startScan.setOnClickListener(this);
+            generateCode.setOnClickListener(this);
             _Scanner = new codeScanner(this, getApplicationContext());
-        }
-        catch(Exception e){
-            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG);
+            _generator = new codeGenerator(getApplicationContext());
+            _generator.setImageView(QRCodeImage);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
 
     }
+
     @Override
-   public void onClick(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button:{
-                Toast.makeText(getApplicationContext(),"here",Toast.LENGTH_LONG);
+            case R.id.button: {
+                Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG);
                 _Scanner.startScan();
                 break;
+            }
+            case R.id.button2: {
+                try {
+                    Toast.makeText(getApplicationContext(),(messageToEncrypt.getText().toString()), Toast.LENGTH_LONG).show();
+                    _generator.setMessage(messageToEncrypt.getText().toString());
+                   _generator.generateCode();
+                  //  QRCodeImage = _generator.getGeneratedCodeImage();
+                } catch (Exception c) {
+                    Toast.makeText(getApplicationContext(), c.toString(), Toast.LENGTH_LONG).show();
+                }
             }
 
         }
