@@ -1,5 +1,6 @@
 package com.example.sagar.qrcodereader;
 
+import android.net.Uri;
 import android.widget.ImageView;
 
 /**
@@ -11,4 +12,6 @@ public interface generator {
     void generateCode();
     ImageView getGeneratedCodeImage();
      void setImageView(ImageView view);
+    Uri getUri();
+
 }

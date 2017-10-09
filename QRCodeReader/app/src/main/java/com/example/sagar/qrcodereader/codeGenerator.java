@@ -3,6 +3,7 @@ package com.example.sagar.qrcodereader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -12,6 +13,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.Exchanger;
@@ -21,11 +24,12 @@ import java.util.concurrent.Exchanger;
  */
 
 public class codeGenerator implements generator {
-    String messageToEncrypt;
+    String messageToEncrypt,filePath;
     String key;
     Bitmap _bitmap;
     ImageView outputImage;
     Context context;
+    File file;
     public codeGenerator(Context c){
         _bitmap=null;
         context=c;
@@ -41,14 +45,36 @@ public class codeGenerator implements generator {
     @Override
     public void generateCode() {
         if(outputImage!=null) {
-            encodeAsBitmap(messageToEncrypt, BarcodeFormat.QR_CODE, 512, 512);
+            encodeAsBitmap(messageToEncrypt, BarcodeFormat.QR_CODE, 256, 256);
              outputImage.setImageBitmap(_bitmap);
+            saveBitmap();
+        }
+    }
+    void saveBitmap(){
+
+        try{
+             file = new File(context.getCacheDir(), messageToEncrypt + ".png");
+            FileOutputStream fOut = new FileOutputStream(file);
+            _bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file.setReadable(true, false);
+        }
+        catch(Exception e){
+            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+
         }
     }
     @Override
     public void setImageView(ImageView view){
         outputImage= view;
     }
+
+    @Override
+    public Uri getUri() {
+        return Uri.fromFile(file);
+    }
+
     @Override
     public ImageView getGeneratedCodeImage() {
         return outputImage;

@@ -16,10 +16,9 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button startScan, generateCode;
     TextView scanedType, scanedContent;
-    EditText messageToEncrypt;
-    ImageView QRCodeImage;
+
     scanner _Scanner;
-    generator _generator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +29,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             generateCode = (Button) findViewById(R.id.button2);
             scanedContent = (TextView) findViewById(R.id.scanContent);
             scanedType = (TextView) findViewById(R.id.scanFormat);
-            messageToEncrypt = (EditText) findViewById(R.id.editText);
-            QRCodeImage = (ImageView) findViewById(R.id.imageView);
+
             startScan.setOnClickListener(this);
             generateCode.setOnClickListener(this);
             _Scanner = new codeScanner(this, getApplicationContext());
-            _generator = new codeGenerator(getApplicationContext());
-            _generator.setImageView(QRCodeImage);
+
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -53,10 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.button2: {
                 try {
-                    Toast.makeText(getApplicationContext(),(messageToEncrypt.getText().toString()), Toast.LENGTH_LONG).show();
-                    _generator.setMessage(messageToEncrypt.getText().toString());
-                   _generator.generateCode();
-                  //  QRCodeImage = _generator.getGeneratedCodeImage();
+                   Intent callGeneratingClass=new Intent(MainActivity.this,QR_CODE.class);
+                    startActivity(callGeneratingClass);
+
+
                 } catch (Exception c) {
                     Toast.makeText(getApplicationContext(), c.toString(), Toast.LENGTH_LONG).show();
                 }
