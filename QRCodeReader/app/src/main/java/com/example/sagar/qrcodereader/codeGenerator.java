@@ -2,7 +2,10 @@ package com.example.sagar.qrcodereader;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -46,16 +49,18 @@ public class codeGenerator implements generator {
     public void generateCode() {
         if(outputImage!=null) {
             encodeAsBitmap(messageToEncrypt, BarcodeFormat.QR_CODE, 256, 256);
+            //Bitmap logoBitMap= BitmapFactory.decodeResource(context.getResources(),R.drawable.logo);
+            //Bitmap finalBitmap=mergeBitmaps(logoBitMap,_bitmap);
              outputImage.setImageBitmap(_bitmap);
-            saveBitmap();
+            saveBitmap(_bitmap);
         }
     }
-    void saveBitmap(){
+    void saveBitmap(Bitmap bitmap){
 
         try{
              file = new File(context.getCacheDir(), messageToEncrypt + ".png");
             FileOutputStream fOut = new FileOutputStream(file);
-            _bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
             fOut.flush();
             fOut.close();
             file.setReadable(true, false);
@@ -64,6 +69,24 @@ public class codeGenerator implements generator {
             Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
 
         }
+    }
+    public Bitmap mergeBitmaps(Bitmap overlay, Bitmap bitmap) {
+
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+
+        Bitmap combined = Bitmap.createBitmap(width, height, bitmap.getConfig());
+        Canvas canvas = new Canvas(combined);
+        int canvasWidth = canvas.getWidth();
+        int canvasHeight = canvas.getHeight();
+
+        canvas.drawBitmap(bitmap, new Matrix(), null);
+
+        int centreX = (canvasWidth  - overlay.getWidth()) /2;
+        int centreY = (canvasHeight - overlay.getHeight()) /2 ;
+        canvas.drawBitmap(overlay, centreX, centreY, null);
+
+        return combined;
     }
     @Override
     public void setImageView(ImageView view){

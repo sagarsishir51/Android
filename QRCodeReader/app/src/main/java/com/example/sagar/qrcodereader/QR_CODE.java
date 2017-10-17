@@ -1,9 +1,6 @@
 package com.example.sagar.qrcodereader;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,34 +10,51 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 public class QR_CODE extends AppCompatActivity implements View.OnClickListener,KeyEvent.Callback {
-    EditText messageToEncrypt;
+    EditText messageToEncrypt,keyToEncrypt;
     ImageView QRCodeImage;
     generator _generator;
+    Encrypt AESEncryption;
     Button generateQRCode,shareQRCode;
-
+    String code="EncryptedQR_CODE";
+    String  key="abcdefghijklmner" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr__code);
-        messageToEncrypt = (EditText) findViewById(R.id.editText);
-        generateQRCode = (Button) findViewById(R.id.button3);
-        generateQRCode.setOnClickListener(this);
-        shareQRCode=(Button) findViewById(R.id.button4);
-        shareQRCode.setOnClickListener(this);
-        QRCodeImage = (ImageView) findViewById(R.id.imageView);
-        _generator = new codeGenerator(getApplicationContext());
-        _generator.setImageView(QRCodeImage);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_qr__code);
+            messageToEncrypt = (EditText) findViewById(R.id.editText);
+            keyToEncrypt = (EditText) findViewById(R.id.editTextKey);
+
+            generateQRCode = (Button) findViewById(R.id.button3);
+            generateQRCode.setOnClickListener(this);
+            shareQRCode = (Button) findViewById(R.id.button4);
+            shareQRCode.setOnClickListener(this);
+            AESEncryption=new AES_Algo();
+            QRCodeImage = (ImageView) findViewById(R.id.imageView);
+            _generator = new codeGenerator(getApplicationContext());
+            _generator.setImageView(QRCodeImage);
+        }
+        catch(Exception e){
+            Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+        }
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+   // @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button3: {
-                Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();
-                _generator.setMessage(messageToEncrypt.getText().toString());
+                AESEncryption.startEncryption(key,messageToEncrypt.getText().toString());
+                _generator.setMessage(code+AESEncryption.getEncryptedData());
                 _generator.generateCode();
                 QRCodeImage.setVisibility(View.VISIBLE);
                 QRCodeImage = _generator.getGeneratedCodeImage();
@@ -53,12 +67,12 @@ public class QR_CODE extends AppCompatActivity implements View.OnClickListener,K
                 sharing.setType("image/jepg");
                 sharing.putExtra(Intent.EXTRA_STREAM,_generator.getUri());
                     startActivity(Intent.createChooser(sharing,"Share Using"));
-                break;
             }
             catch(Exception e){
-                Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_LONG).show();
 
             }
+            break;
             }
 
         }
@@ -73,6 +87,6 @@ public class QR_CODE extends AppCompatActivity implements View.OnClickListener,K
                 break;
             }
         }
-return true;
+        return true;
     }
 }
