@@ -11,7 +11,7 @@ public interface generator {
     void  setMessage(String message);
     void generateCode();
     ImageView getGeneratedCodeImage();
-     void setImageView(ImageView view);
+    void setImageView(ImageView view);
     Uri getUri();
 
 }

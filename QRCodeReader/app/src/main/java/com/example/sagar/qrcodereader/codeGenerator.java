@@ -15,9 +15,11 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.Exchanger;
@@ -49,10 +51,10 @@ public class codeGenerator implements generator {
     public void generateCode() {
         if(outputImage!=null) {
             encodeAsBitmap(messageToEncrypt, BarcodeFormat.QR_CODE, 256, 256);
-            //Bitmap logoBitMap= BitmapFactory.decodeResource(context.getResources(),R.drawable.logo);
-            //Bitmap finalBitmap=mergeBitmaps(logoBitMap,_bitmap);
-             outputImage.setImageBitmap(_bitmap);
-            saveBitmap(_bitmap);
+            Bitmap logoBitMap= BitmapFactory.decodeResource(context.getResources(),R.drawable.logo);
+            Bitmap finalBitmap=mergeBitmaps(logoBitMap,_bitmap);
+             outputImage.setImageBitmap(finalBitmap);
+            saveBitmap(finalBitmap);
         }
     }
     void saveBitmap(Bitmap bitmap){
@@ -65,10 +67,15 @@ public class codeGenerator implements generator {
             fOut.close();
             file.setReadable(true, false);
         }
-        catch(Exception e){
-            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+        catch(IOException e){
+           // Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
 
         }
+        catch(Exception e){
+            //Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
+
+        }
+
     }
     public Bitmap mergeBitmaps(Bitmap overlay, Bitmap bitmap) {
 
@@ -109,7 +116,9 @@ public class codeGenerator implements generator {
                 return;
             }
             Map<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             MultiFormatWriter writer = new MultiFormatWriter();
             BitMatrix result = null;
             try {
