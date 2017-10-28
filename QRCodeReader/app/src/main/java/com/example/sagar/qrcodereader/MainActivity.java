@@ -21,8 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView scanedContentE,scanedContentD;
     EditText keyToEncrypt;
     scanner _Scanner;
-    Decrypt AESDecryption;
-    String  key="abcdefghijklmner" ;
+    Decrypt ECDecryption;
+    KeyManager keyManager;
     String code="EncryptedQR_CODE";
 
     @Override
@@ -38,6 +38,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             scanedContentD = (TextView) findViewById(R.id.textViewDecrypted);
 
             keyToEncrypt=(EditText)findViewById(R.id.editTextKey);
+
+            keyManager=new KeyManager();
+            if(keyManager.checkFirstAttempt(getApplicationContext())){
+                Toast.makeText(getApplicationContext(), "private key time"+keyManager.getPrivateKey().toString(), Toast.LENGTH_LONG).show();
+                keyManager.writeKeyToPreferences(getApplicationContext());
+                Toast.makeText(getApplicationContext(), "public key time"+keyManager.getPublicKey().toString(), Toast.LENGTH_LONG).show();
+            }
+
 
             startScan.setOnClickListener(this);
             generateCode.setOnClickListener(this);
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button: {
                 Toast.makeText(getApplicationContext(), "here", Toast.LENGTH_LONG).show();
-                AESDecryption=new AES_Algo();
+                ECDecryption=new EllipticCurve();
                 _Scanner.startScan();
                 break;
             }
@@ -68,12 +76,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
             case R.id.buttonDecrypt:{
-                String totalMessage=scanedContentE.getText().toString();
-                String messageToDecrypt=totalMessage.substring(code.length());
-                AESDecryption.startDecryption(key,messageToDecrypt);
-                scanedContentD.setText(AESDecryption.getDecryptedData());
-                Toast.makeText(getApplicationContext(),AESDecryption.getDecryptedData(),Toast.LENGTH_LONG).show();
-                break;
+                try {
+                    keyManager.readFromPreferences(getApplicationContext());
+                    String totalMessage = scanedContentE.getText().toString();
+                    String messageToDecrypt = totalMessage.substring(code.length());
+                    ECDecryption.startDecryption(keyManager.getPrivateKey(), messageToDecrypt);
+                    scanedContentD.setText(ECDecryption.getDecryptedData());
+                    Toast.makeText(getApplicationContext(), ECDecryption.getDecryptedData(), Toast.LENGTH_LONG).show();
+                    break;
+                }
+                catch(Exception e){
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+
+                }
+
 
             }
         }

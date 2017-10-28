@@ -67,6 +67,7 @@ public class codeGenerator implements generator {
             fOut.close();
             file.setReadable(true, false);
         }
+
         catch(IOException e){
            // Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show();
 

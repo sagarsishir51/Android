@@ -18,26 +18,26 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 public class QR_CODE extends AppCompatActivity implements View.OnClickListener,KeyEvent.Callback {
-    EditText messageToEncrypt,keyToEncrypt;
+    EditText messageToEncrypt;
     ImageView QRCodeImage;
     generator _generator;
-    Encrypt AESEncryption;
+    Encrypt ECEncryption;
     Button generateQRCode,shareQRCode;
     String code="EncryptedQR_CODE";
-    String  key="abcdefghijklmner" ;
+    KeyManager keyManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_qr__code);
             messageToEncrypt = (EditText) findViewById(R.id.editText);
-            keyToEncrypt = (EditText) findViewById(R.id.editTextKey);
-
+            keyManager=new KeyManager();
+            keyManager.readFromPreferences(getApplicationContext());
             generateQRCode = (Button) findViewById(R.id.button3);
             generateQRCode.setOnClickListener(this);
             shareQRCode = (Button) findViewById(R.id.button4);
             shareQRCode.setOnClickListener(this);
-            AESEncryption=new AES_Algo();
+            ECEncryption=new EllipticCurve();
             QRCodeImage = (ImageView) findViewById(R.id.imageView);
             _generator = new codeGenerator(getApplicationContext());
             _generator.setImageView(QRCodeImage);
@@ -53,8 +53,8 @@ public class QR_CODE extends AppCompatActivity implements View.OnClickListener,K
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button3: {
-                AESEncryption.startEncryption(key,messageToEncrypt.getText().toString());
-                _generator.setMessage(code+AESEncryption.getEncryptedData());
+                ECEncryption.startEncryption(keyManager.getPublicKey(),messageToEncrypt.getText().toString());
+                _generator.setMessage(code+ECEncryption.getEncryptedData());
                 _generator.generateCode();
                 QRCodeImage.setVisibility(View.VISIBLE);
                 QRCodeImage = _generator.getGeneratedCodeImage();

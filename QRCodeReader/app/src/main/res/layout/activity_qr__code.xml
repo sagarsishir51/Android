@@ -68,25 +68,4 @@
         android:layout_alignLeft="@+id/button3"
         android:layout_alignStart="@+id/button3" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:text="Key"
-        android:layout_below="@+id/editText"
-        android:layout_alignRight="@+id/button3"
-        android:layout_alignEnd="@+id/button3" />
-
-    <EditText
-        android:id="@+id/editTextKey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_marginTop="10dp" />
 </RelativeLayout>

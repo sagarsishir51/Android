@@ -5,6 +5,8 @@ import android.util.Base64;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -85,6 +87,12 @@ public class AES_Algo implements Encrypt,Decrypt {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void startDecryption(PrivateKey key, String chiperText) {
+
+    }
+
     @Override
     public void startEncryption(String key, String messageToEncrypt) {
         // TODO Auto-generated method stub
@@ -100,6 +108,11 @@ public class AES_Algo implements Encrypt,Decrypt {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void startEncryption(PublicKey key, String messageToEncrypt) {
+
     }
 }
 
