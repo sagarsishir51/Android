@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sagar.internproject.HomeActivity">
+
+    <Button
+        android:id="@+id/buttonAddRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="131dp"
+        android:layout_marginStart="131dp"
+        android:layout_marginTop="46dp"
+        android:text="Add"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/buttonSearchRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:text="Search"
+        android:layout_below="@+id/buttonAddRecord"
+        android:layout_alignLeft="@+id/buttonAddRecord"
+        android:layout_alignStart="@+id/buttonAddRecord" />
+
+    <Button
+        android:id="@+id/buttonViewRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37dp"
+        android:text="View"
+        android:layout_below="@+id/buttonSearchRecord"
+        android:layout_alignLeft="@+id/buttonSearchRecord"
+        android:layout_alignStart="@+id/buttonSearchRecord" />
+</RelativeLayout>
