@@ -8,16 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.zxing.integration.android.IntentResult;
 
-import java.security.InvalidKeyException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button startScan, generateCode,decrypt;
+    Button startScan, generateCode,decrypt,fireBaseLogin;
     TextView scanedContentE,scanedContentD;
     EditText keyToEncrypt;
     scanner _Scanner;
@@ -33,13 +28,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startScan = (Button) findViewById(R.id.button);
             generateCode = (Button) findViewById(R.id.button2);
             decrypt=(Button)findViewById(R.id.buttonDecrypt);
+            fireBaseLogin=(Button)findViewById(R.id.buttonFireBase);
 
             scanedContentE = (TextView) findViewById(R.id.textViewEncrypted);
             scanedContentD = (TextView) findViewById(R.id.textViewDecrypted);
 
             keyToEncrypt=(EditText)findViewById(R.id.editTextKey);
 
-            keyManager=new KeyManager();
+           keyManager=new KeyManager();
             if(keyManager.checkFirstAttempt(getApplicationContext())){
                 Toast.makeText(getApplicationContext(), "private key time"+keyManager.getPrivateKey().toString(), Toast.LENGTH_LONG).show();
                 keyManager.writeKeyToPreferences(getApplicationContext());
@@ -50,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startScan.setOnClickListener(this);
             generateCode.setOnClickListener(this);
             decrypt.setOnClickListener(this);
+            fireBaseLogin.setOnClickListener(this);
             _Scanner = new codeScanner(this, getApplicationContext());
 
 
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.button2: {
                 Toast.makeText(getApplicationContext(), "generating", Toast.LENGTH_LONG).show();
-                Intent callGeneratingClass=new Intent(MainActivity.this,QR_CODE.class);
+                Intent callGeneratingClass = new Intent(MainActivity.this, QR_CODE.class);
                 startActivity(callGeneratingClass);
                 break;
 
@@ -90,8 +87,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
 
-
+                break;
             }
+            case R.id.buttonFireBase:{
+                Toast.makeText(getApplicationContext(), "firebase", Toast.LENGTH_LONG).show();
+                Intent callGeneratingClass = new Intent(MainActivity.this, FireBaseActivity.class);
+                startActivity(callGeneratingClass);
+            }
+            break;
         }
     }
     @Override

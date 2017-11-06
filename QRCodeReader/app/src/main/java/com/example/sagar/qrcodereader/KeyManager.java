@@ -2,22 +2,12 @@ package com.example.sagar.qrcodereader;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -55,6 +45,7 @@ public class KeyManager {
     String priKey = "PrivateKey", pubKey = "PublicKey";
 
     public KeyManager() {
+        Security.addProvider( new BouncyCastleProvider() );
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
 
     }

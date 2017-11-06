@@ -72,4 +72,12 @@
         android:text=""
         android:visibility="invisible" />
 
+    <Button
+        android:id="@+id/buttonFireBase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FireBase Login"
+        android:layout_below="@+id/textViewEncrypted"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
