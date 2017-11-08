@@ -1,4 +1,4 @@
-package com.example.sagar.internproject;
+package com.example.sagar.internproject.model;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
