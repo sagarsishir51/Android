@@ -22,11 +22,12 @@
         android:id="@+id/buttonSearchRecord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonAddRecord"
+        android:layout_alignStart="@+id/buttonAddRecord"
+        android:layout_below="@+id/buttonAddRecord"
         android:layout_marginTop="31dp"
         android:text="Search"
-        android:layout_below="@+id/buttonAddRecord"
-        android:layout_alignLeft="@+id/buttonAddRecord"
-        android:layout_alignStart="@+id/buttonAddRecord" />
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonViewRecord"

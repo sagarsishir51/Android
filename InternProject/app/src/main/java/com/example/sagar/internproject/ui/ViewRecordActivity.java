@@ -1,20 +1,31 @@
 package com.example.sagar.internproject.ui;
 
-import android.content.Context;
 import android.content.Intent;
+import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.sagar.internproject.App;
-import com.example.sagar.internproject.DaoSession;
+import com.example.sagar.internproject.ApiURLUser;
 import com.example.sagar.internproject.R;
+import com.example.sagar.internproject.adapter.JsonAdapter;
 import com.example.sagar.internproject.adapter.ListAdapter;
-import com.example.sagar.internproject.userInfoDao;
+import com.example.sagar.internproject.adapter.NetworkAdapter;
+import com.example.sagar.internproject.model.UserInfo;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -22,25 +33,50 @@ import butterknife.ButterKnife;
 
 
 public class ViewRecordActivity extends AppCompatActivity implements KeyEvent.Callback {
-    userInfoDao userDao;
+  //  userInfoDao userDao;
     @BindView(R.id.ListView)
     ListView listView;
     ListAdapter listAdapter;
-
+    List<UserInfo> infoList;
+    NetworkAdapter mNetworkAdapter;
+    JsonAdapter mJsonAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mNetworkAdapter=new NetworkAdapter();
+        mJsonAdapter=new JsonAdapter();
         setContentView(R.layout.activity_view_record);
-        DaoSession daoSession=((App)getApplication()).getDaoSession();
-        userDao=daoSession.getUserInfoDao();
+        //DaoSession daoSession=((App)getApplication()).getDaoSession();
+        //userDao=daoSession.getUserInfoDao();
         listAdapter=new ListAdapter();
         ButterKnife.bind(this);
-        //Toast.makeText(getApplicationContext(),((App)getApplicationContext()).getDatabaseName(),Toast.LENGTH_LONG).show();
+        getDataFromAPI();
+        getListOfUsers();
         callBackAction();
     }
 
-void getListOfUsers(){
-    listAdapter.loadDataToAdapter(userDao.loadAll());
+    private void getDataFromAPI() {
+        try {
+            mNetworkAdapter.setURL(ApiURLUser.LOCALHOST+ApiURLUser.GET_ALL_USER);
+            mNetworkAdapter.GetMethodConnection();
+            int responseCode=mNetworkAdapter.getResponseCode();
+            Toast.makeText(getApplicationContext(),""+responseCode,Toast.LENGTH_LONG).show();
+            InputStreamReader responseBodyReader1 =mNetworkAdapter.getJsonData();
+            mJsonAdapter.makeJsonReader(responseBodyReader1);
+            infoList=mJsonAdapter.readJsonData();
+            mNetworkAdapter.close();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    void getListOfUsers(){
+    listAdapter.loadDataToAdapter(infoList);
     List<String> names=new ArrayList<String>();
     if(listAdapter.getInfo().size()!=0){
         for(int i=0;i<listAdapter.getInfo().size();i++){

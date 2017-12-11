@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.SearchView;
 import com.example.sagar.internproject.App;
-import com.example.sagar.internproject.DaoSession;
+
 import com.example.sagar.internproject.R;
-import com.example.sagar.internproject.userInfoDao;
+import com.example.sagar.internproject.model.DaoSession;
+import com.example.sagar.internproject.model.userInfoDao;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

@@ -2,6 +2,9 @@ package com.example.sagar.internproject;
 
 import android.app.Application;
 
+import com.example.sagar.internproject.model.DaoMaster;
+import com.example.sagar.internproject.model.DaoSession;
+
 import org.greenrobot.greendao.database.Database;
 
 /**
@@ -14,7 +17,7 @@ public class App extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "userInfo-db");
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "UserInfo-db");
         Database db = helper.getWritableDb();
         databaseName=helper.getDatabaseName();
         daoSession = new DaoMaster(db).newSession();

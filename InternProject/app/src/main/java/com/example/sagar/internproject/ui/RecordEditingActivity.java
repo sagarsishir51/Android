@@ -1,20 +1,20 @@
 
 package com.example.sagar.internproject.ui;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.sagar.internproject.App;
-import com.example.sagar.internproject.DaoSession;
+
 import com.example.sagar.internproject.R;
-import com.example.sagar.internproject.model.userInfo;
-import com.example.sagar.internproject.userInfoDao;
+import com.example.sagar.internproject.model.DaoSession;
+import com.example.sagar.internproject.model.UserInfo;
+import com.example.sagar.internproject.model.userInfoDao;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +26,7 @@ public class RecordEditingActivity extends AppCompatActivity implements KeyEvent
     @BindView(R.id.editingName)
     EditText editedname;
     userInfoDao userDao;
-    userInfo infoToEdit;
+    UserInfo infoToEdit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

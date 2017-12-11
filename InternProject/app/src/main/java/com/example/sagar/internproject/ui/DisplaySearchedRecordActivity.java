@@ -6,11 +6,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.sagar.internproject.App;
-import com.example.sagar.internproject.DaoSession;
+
 import com.example.sagar.internproject.R;
 import com.example.sagar.internproject.adapter.ListAdapter;
-import com.example.sagar.internproject.model.userInfo;
-import com.example.sagar.internproject.userInfoDao;
+import com.example.sagar.internproject.model.DaoSession;
+import com.example.sagar.internproject.model.UserInfo;
+import com.example.sagar.internproject.model.userInfoDao;
+
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -35,7 +37,7 @@ public class DisplaySearchedRecordActivity extends AppCompatActivity {
         try {
            String searchedWord  = getIntent().getStringExtra("searchedWord");
             QueryBuilder queryBuilder=userDao.queryBuilder().where(userInfoDao.Properties.Name.eq(searchedWord));
-            List<userInfo> searchedData=queryBuilder.list();
+            List<UserInfo> searchedData=queryBuilder.list();
             if(searchedData.size()==0){
                 queryBuilder=userDao.queryBuilder().where(userInfoDao.Properties.Name.like("%"+searchedWord+"%"));
                 searchedData=queryBuilder.list();

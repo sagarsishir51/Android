@@ -1,10 +1,8 @@
 package com.example.sagar.internproject.adapter;
 import android.content.Context;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import com.example.sagar.internproject.R;
-import com.example.sagar.internproject.model.userInfo;
+import com.example.sagar.internproject.model.UserInfo;
 
 import java.util.List;
 
@@ -13,7 +11,7 @@ import java.util.List;
  */
 
 public class ListAdapter {
-    List<userInfo> info;
+    List<UserInfo> info;
 
     public ArrayAdapter<String> getUserAdapter() {
         return userAdapter;
@@ -21,10 +19,10 @@ public class ListAdapter {
 
     ArrayAdapter<String> userAdapter;
     public ListAdapter(){}
-    public void loadDataToAdapter(List<userInfo>list){
+    public void loadDataToAdapter(List<UserInfo>list){
         info=list;
     }
-    public List<userInfo> getInfo() {
+    public List<UserInfo> getInfo() {
         return info;
     }
     public void initializeAdapter(Context c, int layoutIdentity , List<String> names){
